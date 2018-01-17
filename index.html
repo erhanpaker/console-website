@@ -68,7 +68,7 @@
         $(".cursor").toggle(50);
     }, 500);
     var main = {
-        write: function (text, area) {
+        write: function (text, area, _function) {
             var tag = text.substring(0, 4);
             var word;
             var addWord = 1;
@@ -106,14 +106,20 @@
             text = text.substring(removeCount);
             if (text !== "") {
                 setTimeout(function () {
-                    main.write(text, area)
+                    main.write(text, area,_function)
                 }, timer);
+            }else{
+                setTimeout(function () {
+                    if (_function) {
+                        _function();
+                    }
+                }, 1000);
             }
         },
         clear: function (area) {
             var board = $("#board ." + area).html("");
         },
-        writeLine: function (text, area, key) {
+        writeLine: function (text, area, _function, key) {
             key = key || 0;
             var board = $("#board ." + area);
             if (typeof text === "string") {
@@ -127,15 +133,21 @@
             key++;
             if (text[key] !== undefined) {
                 setTimeout(function () {
-                    main.writeLine(text, area, key);
+                    main.writeLine(text, area, _function, key);
                 }, 100);
+            }else{
+                setTimeout(function () {
+                    if (_function) {
+                        _function();
+                    }
+                }, 1000);
             }
 //            $(window).load(function() {
             $("html, body").stop(true,true).animate({scrollTop: $(document).height()}, 1000);
 //            });
         },
-        writeUserCommand: function () {
-            this.writeLine($(".user").html() + $(".text").html(), 'view');
+        writeUserCommand: function (_function) {
+            this.writeLine($(".user").html() + $(".text").html(), 'view',_function);
             main.clear('text');
         },
         changeUser: function (text) {
@@ -148,8 +160,7 @@
             return '';
         },
         render: function () {
-            main.write("ssh guest@erdiertas.com", "text");
-            setTimeout(function () {
+            main.write("ssh guest@erdiertas.com", "text", function () {
                 main.changeUser('guest@erdiertas.com:~ # ')
                 main.clear('text');
                 main.writeLine(
@@ -158,97 +169,84 @@
                     "   ___ _ __ __| (_)   ___ _ __| |_ __ _ ___ \n" +
                     "  / _ \\ '__/ _` | |  / _ \\ '__| __/ _` / __|\n" +
                     " |  __/ | | (_| | | |  __/ |  | || (_| \\__ \\\n" +
-                    "  \\___|_|  \\__,_|_|  \\___|_|   \\__\\__,_|___/\n", "view");
-                setTimeout(function () {
-                    main.write("cd erdiertas/files", "text");
-                    setTimeout(function () {
-                        main.writeUserCommand();
-                        main.changeUser('guest@erdiertas.com:erdiertas/files # ')
-                        main.write(main.getMobileBr()+"cat info.txt", "text");
-                        setTimeout(function () {
+                    "  \\___|_|  \\__,_|_|  \\___|_|   \\__\\__,_|___/\n", "view",function () {
+                        main.write("cd erdiertas/files", "text",function () {
                             main.writeUserCommand();
-                            setTimeout(function () {
-                                main.writeLine(
-                                    "\n" +
-                                    "/////////////////////////////////////////\n\n" +
-                                    "NAME:       ERDİ ERTAŞ\n" +
-                                    "TITLE:      SENIOR FULL-STACK DEVELOPER\n" +
-                                    "PHONE:      +905321716629\n" +
-                                    "E-MAIL:     ertaserdi@gmail.com\n\n" +
-                                    "/////////////////////////////////////////\n" +
-                                    "", "view");
-                                setTimeout(function () {
-                                    main.write(main.getMobileBr()+"cat life_summary.txt", "text");
-                                    setTimeout(function () {
-                                        main.writeUserCommand();
-                                        setTimeout(function () {
-                                            main.writeLine(
-                                                "\n"+
-                                                "             ~~ SUMMARY ~~\n" +
-                                                "Between 2007 and 2014, I have been working \n" +
-                                                "independently with many companies to improve \n" +
-                                                "themselves. Among these companies were \n" +
-                                                "portals projects,  corporate web designs \n" +
-                                                "and some special projects.\n" +
-                                                "\n" +
-                                                "I graduated from Dörtyol Vocational School\n" +
-                                                "of Higher Education - Mustafa Kemal \n" +
-                                                "University as the highest ranked student \n" +
-                                                "in the department (3.30/4.00) in 2014.\n" +
-                                                "... " +
-                                                "\n\n" +
-                                                "", "view");
-                                            setTimeout(function () {
-                                                main.write(main.getMobileBr()+"cat talents.txt", "text");
-                                                setTimeout(function () {
-                                                    main.writeUserCommand();
-                                                    setTimeout(function () {
-                                                        main.writeLine(
-                                                            "\n"+
-                                                            "             ~~ TALENTS ~~\n" +
-                                                            "2006: HTML\n" +
-                                                            "2006: CSS\n" +
-                                                            "2006: JAVASCRIPT\n" +
-                                                            "2007: PHP\n" +
-                                                            "2008: MySQL\n" +
-                                                            "2009: jQuery\n" +
-                                                            "2010: Apache 2\n" +
-                                                            "2014: OOP\n" +
-                                                            "2014: MVC\n" +
-                                                            "2014: Memcache\n" +
-                                                            "2014: Bootstrap\n" +
-                                                            "2014: NodeJS\n" +
-                                                            "2014: Debian Server\n" +
-                                                            "2015: Yii2\n" +
-                                                            "\n\n" +
-                                                            "", "view");
-                                                        setTimeout(function () {
-                                                            main.write(main.getMobileBr()+"cat last_projects.txt", "text");
-                                                            setTimeout(function () {
-                                                                main.writeUserCommand();
-                                                                setTimeout(function () {
+                            main.changeUser('guest@erdiertas.com:erdiertas/files # ')
+                            main.write(main.getMobileBr()+"cat info.txt", "text",function () {
+                                main.writeUserCommand(function () {
+                                    main.writeLine(
+                                        "\n" +
+                                        "/////////////////////////////////////////\n\n" +
+                                        "NAME:       ERDİ ERTAŞ\n" +
+                                        "TITLE:      SENIOR FULL-STACK DEVELOPER\n" +
+                                        "PHONE:      +905321716629\n" +
+                                        "E-MAIL:     ertaserdi@gmail.com\n\n" +
+                                        "/////////////////////////////////////////\n" +
+                                        "", "view",function () {
+                                            main.write(main.getMobileBr()+"cat life_summary.txt", "text",function () {
+                                                main.writeUserCommand(function () {
+                                                    main.writeLine(
+                                                        "\n"+
+                                                        "             ~~ SUMMARY ~~\n" +
+                                                        "Between 2007 and 2014, I have been working \n" +
+                                                        "independently with many companies to improve \n" +
+                                                        "themselves. Among these companies were \n" +
+                                                        "portals projects,  corporate web designs \n" +
+                                                        "and some special projects.\n" +
+                                                        "\n" +
+                                                        "I graduated from Dörtyol Vocational School\n" +
+                                                        "of Higher Education - Mustafa Kemal \n" +
+                                                        "University as the highest ranked student \n" +
+                                                        "in the department (3.30/4.00) in 2014.\n" +
+                                                        "... " +
+                                                        "\n\n" +
+                                                        "", "view",function () {
+                                                            main.write(main.getMobileBr()+"cat talents.txt", "text",function () {
+                                                                main.writeUserCommand(function () {
                                                                     main.writeLine(
-                                                                        "\n" +
-                                                                        "          ~~ LAST PROJECTS ~~\n" +
-                                                                        "2018:  maggenta.com (Backend, Frontend)\n" +
-                                                                        "2017:  osmanlispor.com (Backend)\n" +
-                                                                        "2016:  shop.attconcorde.com (Backend, Frontend)\n" +
+                                                                        "\n"+
+                                                                        "             ~~ TALENTS ~~\n" +
+                                                                        "2006: HTML\n" +
+                                                                        "2006: CSS\n" +
+                                                                        "2006: JAVASCRIPT\n" +
+                                                                        "2007: PHP\n" +
+                                                                        "2008: MySQL\n" +
+                                                                        "2009: jQuery\n" +
+                                                                        "2010: Apache 2\n" +
+                                                                        "2014: OOP\n" +
+                                                                        "2014: MVC\n" +
+                                                                        "2014: Memcache\n" +
+                                                                        "2014: Bootstrap\n" +
+                                                                        "2014: NodeJS\n" +
+                                                                        "2014: Debian Server\n" +
+                                                                        "2015: Yii2\n" +
+                                                                        "\n\n" +
+                                                                        "", "view",function () {
+                                                                            main.write(main.getMobileBr()+"cat last_projects.txt", "text",function () {
+                                                                                main.writeUserCommand(function () {
+                                                                                    main.writeLine(
+                                                                                        "\n" +
+                                                                                        "          ~~ LAST PROJECTS ~~\n" +
+                                                                                        "2018:  maggenta.com (Backend, Frontend)\n" +
+                                                                                        "2017:  osmanlispor.com (Backend)\n" +
+                                                                                        "2016:  shop.attconcorde.com (Backend, Frontend)\n" +
 
-                                                                        "", "view");
-                                                                }, 1000)
-                                                            }, 3000)
-                                                        }, 3000);
-                                                    }, 1000);
-                                                }, 2000);
-                                            }, 4000);
-                                        },1000)
-                                    }, 2000)
-                                }, 3000);
-                            },1000);
-                        },2000);
-                    }, 3000);
-                }, 2500);
-            }, 4000);
+                                                                                        "", "view");
+                                                                                });
+                                                                            });
+                                                                        });
+                                                                });
+                                                            });
+                                                        });
+                                                });
+                                            });
+                                        });
+                                });
+                            });
+                        });
+                    });
+            });
 
         }
     };
