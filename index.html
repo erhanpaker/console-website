@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Senior Full-Stack Developer Erdi Ertaş</title>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #03ff00;
+            font-size: 18px;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        pre {
+            color: #03ff00;
+        }
+
+        .cursor {
+            width: 6px;
+            background-color: #03ff00;
+            height: 10px;
+            display: inline-block;
+        }
+
+        #board {
+            position: relative;
+            margin: 0;
+            padding: 20px;
+        }
+        @media only screen and (max-device-width: 480px){
+            body {
+                font-size: 12px;
+            }
+            #board {
+                padding: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div id="board">
+<pre>
+<span class="view"></span>
+<span class="user">Mac:~ </span><span class="text"></span><span class="cursor"></span>
+    <br>
+</pre>
+
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+<script>
+    setInterval(function () {
+        $(".cursor").toggle(50);
+    }, 500);
+    var main = {
+        write: function (text, area) {
+            var tag = text.substring(0, 4);
+            var word;
+            var addWord = 1;
+            var removeCount = 1;
+            var timer = 100;
+            var board = $("#board ." + area);
+
+            var tagRegex = /#([A-Z]{2})#/g;
+            var tagMatch = tagRegex.exec(tag);
+            if (tagMatch) {
+                tag = tagMatch[0];
+                text = text.substring(4);
+            } else {
+                tag = null;
+            }
+            if (tag === "#FL#") {
+                removeCount = 50;
+                addWord = 50;
+            } else if (tag === "#L2#") {
+                timer = 2000;
+            } else if (tag === "#CL#") {
+                board.text("");
+            }else if (tag === "#BR#") {
+                board.append("<br>");
+            }
+            word = text.substring(0, addWord);
+//                if (word === " ") {
+//                    word = "&nbsp;";
+//                }else{
+            word = document.createTextNode(word);
+//                }
+//            }
+//            console.log(word)
+            board.append(word)
+            text = text.substring(removeCount);
+            if (text !== "") {
+                setTimeout(function () {
+                    main.write(text, area)
+                }, timer);
+            }
+        },
+        clear: function (area) {
+            var board = $("#board ." + area).html("");
+        },
+        writeLine: function (text, area, key) {
+            key = key || 0;
+            var board = $("#board ." + area);
+            if (typeof text === "string") {
+                text = text.split("\n");
+            }
+            if (text[key] !== "") {
+                board.append("<span>" + text[key] + "</span><br>");
+            }else{
+                board.append("<br>");
+            }
+            key++;
+            if (text[key] !== undefined) {
+                setTimeout(function () {
+                    main.writeLine(text, area, key);
+                }, 100);
+            }
+//            $(window).load(function() {
+            $("html, body").stop(true,true).animate({scrollTop: $(document).height()}, 1000);
+//            });
+        },
+        writeUserCommand: function () {
+            this.writeLine($(".user").html() + $(".text").html(), 'view');
+            main.clear('text');
+        },
+        changeUser: function (text) {
+            $(".user").html(text)
+        },
+        getMobileBr:function () {
+            if ($(window).width() < 480) {
+                return '#BR#';
+            }
+            return '';
+        },
+        render: function () {
+            main.write("ssh guest@erdiertas.com", "text");
+            setTimeout(function () {
+                main.changeUser('guest@erdiertas.com:~ # ')
+                main.clear('text');
+                main.writeLine(
+                    "" +
+                    "               _ _             _            \n" +
+                    "   ___ _ __ __| (_)   ___ _ __| |_ __ _ ___ \n" +
+                    "  / _ \\ '__/ _` | |  / _ \\ '__| __/ _` / __|\n" +
+                    " |  __/ | | (_| | | |  __/ |  | || (_| \\__ \\\n" +
+                    "  \\___|_|  \\__,_|_|  \\___|_|   \\__\\__,_|___/\n", "view");
+                setTimeout(function () {
+                    main.write("cd erdiertas/files", "text");
+                    setTimeout(function () {
+                        main.writeUserCommand();
+                        main.changeUser('guest@erdiertas.com:erdiertas/files # ')
+                        main.write(main.getMobileBr()+"cat info.txt", "text");
+                        setTimeout(function () {
+                            main.writeUserCommand();
+                            setTimeout(function () {
+                                main.writeLine(
+                                    "\n" +
+                                    "/////////////////////////////////////////\n\n" +
+                                    "NAME:       ERDİ ERTAŞ\n" +
+                                    "TITLE:      SENIOR FULL-STACK DEVELOPER\n" +
+                                    "PHONE:      +905321716629\n" +
+                                    "E-MAIL:     ertaserdi@gmail.com\n\n" +
+                                    "/////////////////////////////////////////\n" +
+                                    "", "view");
+                                setTimeout(function () {
+                                    main.write(main.getMobileBr()+"cat life_summary.txt", "text");
+                                    setTimeout(function () {
+                                        main.writeUserCommand();
+                                        setTimeout(function () {
+                                            main.writeLine(
+                                                "\n"+
+                                                "             ~~ SUMMARY ~~\n" +
+                                                "Between 2007 and 2014, I have been working \n" +
+                                                "independently with many companies to improve \n" +
+                                                "themselves. Among these companies were \n" +
+                                                "portals projects,  corporate web designs \n" +
+                                                "and some special projects.\n" +
+                                                "\n" +
+                                                "I graduated from Dörtyol Vocational School\n" +
+                                                "of Higher Education - Mustafa Kemal \n" +
+                                                "University as the highest ranked student \n" +
+                                                "in the department (3.30/4.00) in 2014.\n" +
+                                                "... " +
+                                                "\n\n" +
+                                                "", "view");
+                                            setTimeout(function () {
+                                                main.write(main.getMobileBr()+"cat talents.txt", "text");
+                                                setTimeout(function () {
+                                                    main.writeUserCommand();
+                                                    setTimeout(function () {
+                                                        main.writeLine(
+                                                            "\n"+
+                                                            "             ~~ TALENTS ~~\n" +
+                                                            "2006: HTML\n" +
+                                                            "2006: CSS\n" +
+                                                            "2006: JAVASCRIPT\n" +
+                                                            "2007: PHP\n" +
+                                                            "2008: MySQL\n" +
+                                                            "2009: jQuery\n" +
+                                                            "2010: Apache 2\n" +
+                                                            "2014: OOP\n" +
+                                                            "2014: MVC\n" +
+                                                            "2014: Memcache\n" +
+                                                            "2014: Bootstrap\n" +
+                                                            "2014: NodeJS\n" +
+                                                            "2014: Debian Server\n" +
+                                                            "2015: Yii2\n" +
+                                                            "\n\n" +
+                                                            "", "view");
+                                                        setTimeout(function () {
+                                                            main.write(main.getMobileBr()+"cat last_projects.txt", "text");
+                                                            setTimeout(function () {
+                                                                main.writeUserCommand();
+                                                                setTimeout(function () {
+                                                                    main.writeLine(
+                                                                        "\n" +
+                                                                        "          ~~ LAST PROJECTS ~~\n" +
+                                                                        "2018:  maggenta.com (Backend, Frontend)\n" +
+                                                                        "2017:  osmanlispor.com (Backend)\n" +
+                                                                        "2016:  shop.attconcorde.com (Backend, Frontend)\n" +
+
+                                                                        "", "view");
+                                                                }, 1000)
+                                                            }, 3000)
+                                                        }, 3000);
+                                                    }, 1000);
+                                                }, 2000);
+                                            }, 4000);
+                                        },1000)
+                                    }, 2000)
+                                }, 3000);
+                            },1000);
+                        },2000);
+                    }, 3000);
+                }, 2500);
+            }, 4000);
+
+        }
+    };
+    main.render();
+
+</script>
+</body>
+</html>
