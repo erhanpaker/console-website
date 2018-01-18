@@ -35,17 +35,6 @@
         .image {
             font-size: 10px;
         }
-        .image span {
-            webkit-transition: 0.1s -webkit-filter linear;
-            -moz-transition: 0.1s -moz-filter linear;
-            -moz-transition: 0.1s filter linear;
-            -ms-transition: 0.1s -ms-filter linear;
-            -o-transition: 0.1s -o-filter linear;
-            transition: 0.1s filter linear, 0.1s -webkit-filter linear;
-        }
-        .image span.gray {
-            filter: grayscale(72%);
-        }
 
         @media only screen and (max-device-width: 480px) {
             body {
@@ -117,16 +106,17 @@
                 main.image10Toggle();
             }, 500)
         },
-        imageEfects: function (i) {
-            var spans = $(".image span").removeClass('gray');
-            $($(".image span").get(i)).addClass('gray');
-            setTimeout(function () {
-                if ($($(".image span").get(i)).length === 0) {
-                    i = -1;
-                }
-                main.imageEfects(++i);
-            }, 100);
-        },
+//        imageEfects: function (i) {
+//            var spans = $(".image span").removeClass('gray');
+//            var e = $(".image span").length - i -1;
+//            $($(".image span").get(e)).addClass('gray');
+//            setTimeout(function () {
+//                if ($($(".image span").get(e)).length === 0) {
+//                    i = -1;
+//                }
+//                main.imageEfects(++i);
+//            }, 100);
+//        },
         write: function (text, area, _function) {
             var tag = text.substring(0, 4);
             var word;
@@ -226,7 +216,7 @@
         render: function () {
             this.cursor();
             this.image10Toggle();
-            this.imageEfects(0);
+//            this.imageEfects(0);
             main.write("ssh guest@erdiertas.com", "text", function () {
                 main.changeUser('guest@erdiertas.com:~ # ')
                 main.clear('text');
