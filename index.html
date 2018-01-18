@@ -188,7 +188,7 @@
                     "  / _ \\ '__/ _` | |  / _ \\ '__| __/ _` / __|\n" +
                     " |  __/ | | (_| | | |  __/ |  | || (_| \\__ \\\n" +
                     "  \\___|_|  \\__,_|_|  \\___|_|   \\__\\__,_|___/\n", "view", function () {
-                        main.write("cd erdiertas/files", "text", function () {
+                        main.write(main.getMobileBr() + "cd erdiertas/files", "text", function () {
                             main.changeUser('guest@erdiertas.com:erdiertas/files # ');
                             main.writeUserCommand(function () {
                                 main.write(main.getMobileBr() + 'wget profile_photo.jpg', 'text', function () {
