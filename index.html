@@ -31,9 +31,22 @@
             margin: 0;
             padding: 20px;
         }
+
         .image {
             font-size: 10px;
         }
+        .image span {
+            webkit-transition: 0.1s -webkit-filter linear;
+            -moz-transition: 0.1s -moz-filter linear;
+            -moz-transition: 0.1s filter linear;
+            -ms-transition: 0.1s -ms-filter linear;
+            -o-transition: 0.1s -o-filter linear;
+            transition: 0.1s filter linear, 0.1s -webkit-filter linear;
+        }
+        .image span.gray {
+            filter: grayscale(72%);
+        }
+
         @media only screen and (max-device-width: 480px) {
             body {
                 font-size: 12px;
@@ -79,6 +92,40 @@
             setTimeout(function () {
                 main.cursor();
             }, 500)
+        },
+        countGet01:0,
+        get01:function (v) {
+            v = parseInt(v);
+            main.countGet01 +=1;
+            return v === 0 && main.countGet01 % 2 ? 1: 0;
+        },
+        image10Toggle: function () {
+            var fonts = $(".image font");
+            fonts.each(function (fi) {
+                var t = $(this);
+                var v = t.html();
+                var chars = v.split('');
+                var o = '';
+                $.each(chars, function (i,c) {
+                        o += main.get01(c);
+//                    }, i)
+                });
+                t.html(o);
+//                t.html(v.replace('1',main.get01()))
+            });
+            setTimeout(function () {
+                main.image10Toggle();
+            }, 500)
+        },
+        imageEfects: function (i) {
+            var spans = $(".image span").removeClass('gray');
+            $($(".image span").get(i)).addClass('gray');
+            setTimeout(function () {
+                if ($($(".image span").get(i)).length === 0) {
+                    i = -1;
+                }
+                main.imageEfects(++i);
+            }, 100);
         },
         write: function (text, area, _function) {
             var tag = text.substring(0, 4);
@@ -178,6 +225,8 @@
         },
         render: function () {
             this.cursor();
+            this.image10Toggle();
+            this.imageEfects(0);
             main.write("ssh guest@erdiertas.com", "text", function () {
                 main.changeUser('guest@erdiertas.com:~ # ')
                 main.clear('text');
