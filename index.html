@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="google-site-verification" content="77DVRkmW5s_MZLrn9q659MsC9PpstY9xpV-b4rGG5-M" />
+    <meta name="google-site-verification" content="77DVRkmW5s_MZLrn9q659MsC9PpstY9xpV-b4rGG5-M"/>
     <title>Senior Full-Stack Developer Erdi Ertaş</title>
 
     <style>
@@ -19,12 +19,14 @@
             color: #03ff00;
         }
 
-        a:link,a:visited,a:active {
+        a:link, a:visited, a:active {
             color: #06c100;
         }
+
         a:hover {
             color: #00ff14;
         }
+
         .cursor {
             width: 6px;
             background-color: #03ff00;
@@ -45,7 +47,9 @@
         .talents span:nth-of-type(even) {
             color: #c7ff29;
         }
-
+        .user-name {
+            color: #ffd700;
+        }
         @media only screen and (max-device-width: 480px) {
             body {
                 font-size: 12px;
@@ -92,29 +96,38 @@
                 main.cursor();
             }, 500)
         },
-        countGet01:0,
-        get01:function (v) {
+        countGet01: 0,
+        get01: function (v) {
             v = parseInt(v);
-            main.countGet01 +=1;
-            return v === 0 && main.countGet01 % 3 ? 1: 0;
+            main.countGet01 += 1;
+            return v === 0 && main.countGet01 % 3 ? 1 : 0;
         },
         image10Toggle: function () {
             var fonts = $(".image font");
+            var length = fonts.length - 1;
+            var timer = 50;
+            var startTime = new Date();
             fonts.each(function (fi) {
                 var t = $(this);
                 var v = t.html();
                 var chars = v.split('');
                 var o = '';
-                $.each(chars, function (i,c) {
-                        o += main.get01(c);
+                $.each(chars, function (i, c) {
+                    o += main.get01(c);
 //                    }, i)
                 });
                 t.html(o);
+                if (length === fi) {
+
+                }
 //                t.html(v.replace('1',main.get01()))
+            }).promise().done(function () {
+                var endTime = new Date();
+                setTimeout(function () {
+                    main.image10Toggle();
+                }, endTime - startTime + 100);
             });
-            setTimeout(function () {
-                main.image10Toggle();
-            }, 100)
+
         },
 //        imageEfects: function (i) {
 //            var spans = $(".image span").removeClass('gray');
@@ -231,7 +244,7 @@
 
             setTimeout(function () {
                 main.write("ssh guest@erdiertas.com", "text", function () {
-                    main.changeUser('guest@erdiertas.com:~ # ')
+                    main.changeUser('<span class="user-name">guest@erdiertas.com:</span>~ # ')
                     main.clear('text');
                     main.writeLine(
                         "" +
@@ -241,7 +254,7 @@
                         " |  __/ | | (_| | | |  __/ |  | || (_| \\__ \\\n" +
                         "  \\___|_|  \\__,_|_|  \\___|_|   \\__\\__,_|___/\n", "view", function () {
                             main.write(main.getMobileBr() + "cd erdiertas/files", "text", function () {
-                                main.changeUser('guest@erdiertas.com:erdiertas/files # ');
+                                main.changeUser('<span class="user-name">guest@erdiertas.com:</span>erdiertas/files # ');
                                 main.writeUserCommand(function () {
                                     main.write(main.getMobileBr() + 'wget profile_photo.jpg', 'text', function () {
                                         main.writeUserCommand(function () {
@@ -361,9 +374,10 @@
                                                                                                             main.writeLine(
                                                                                                                 "\n" +
                                                                                                                 "          ~~ LAST PROJECTS ~~\n" +
-                                                                                                                "2018:       <a href='http://maggenta.com' target='_blank'>maggenta.com</a> (Backend, Frontend)\n" +
-                                                                                                                "2017:       <a href='http://osmanlispor.com' target='_blank'>osmanlispor.com</a> (Backend)\n" +
-                                                                                                                "2016:       <a href='http://shop.attconcorde.com' target='_blank'>shop.attconcorde.com</a> (Backend, Frontend)\n" +
+                                                                                                                "2018:       <a href='http://erdiertas.com' target='_blank'>erdiertas.com</a> (Backend)\n" +
+                                                                                                                "2017:       <a href='http://maggenta.com' target='_blank'>maggenta.com</a> (Backend, Frontend)\n" +
+                                                                                                                "2016:       <a href='http://osmanlispor.com.tr' target='_blank'>osmanlispor.com.tr</a> (Backend)\n" +
+                                                                                                                "2015:       <a href='http://shop.attconcorde.com' target='_blank'>shop.attconcorde.com</a> (Backend, Frontend)\n" +
                                                                                                                 "2014:       <a href='http://3e5.com/'>+Social CRM</a> (Backend)", "view");
                                                                                                         });
                                                                                                     });
@@ -383,7 +397,7 @@
                             });
                         });
                 })
-            }, 3000)
+            }, 2000)
         }
     };
     main.render();
@@ -393,7 +407,11 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112767684-1"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'UA-112767684-1');
