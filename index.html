@@ -254,7 +254,9 @@
                         " |  __/ | | (_| | | |  __/ |  | || (_| \\__ \\\n" +
                         "  \\___|_|  \\__,_|_|  \\___|_|   \\__\\__,_|___/\n", "view", function () {
                             main.write(main.getMobileBr() + "cd erdiertas/files", "text", function () {
-                                main.changeUser('<span class="user-name">guest@erdiertas.com:</span>erdiertas/files # ');
+                                setTimeout(function () {
+                                    main.changeUser('<span class="user-name">guest@erdiertas.com:</span>erdiertas/files # ');
+                                },100);
                                 main.writeUserCommand(function () {
                                     main.write(main.getMobileBr() + 'wget profile_photo.jpg', 'text', function () {
                                         main.writeUserCommand(function () {
