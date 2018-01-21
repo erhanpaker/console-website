@@ -34,6 +34,6 @@ if (isset($_POST)) {
         }
         echo $result;
     } else {
-        echo '500';
+        echo '400';
     }
 }
