@@ -57,18 +57,19 @@
             /*left: -1000px;*/
             /*top:-1000px;*/
             opacity: 0;
-            visibility: hidden;
+            /*visibility: hidden;*/
         }
 
         form textarea {
             position: absolute;
             left: 0;
-            width: 100%;
+            top: 0;
+            width: calc(100% - 26px);
             font-family: monospace;
             white-space: pre;
             font-size: 18px;
             padding: 13px 7px;
-            /*z-index: -1;*/
+            z-index: -1;
         }
 
         .info {
@@ -468,9 +469,9 @@
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
                                                                                                                                     '');
                                                                                                                                 setTimeout(function () {
-                                                                                                                                 $("form textarea").each(function () {
-                                                                                                                                     textareaSetPosition($(this));
-                                                                                                                                 })
+                                                                                                                                    $("form textarea").each(function () {
+                                                                                                                                        textareaSetPosition($(this));
+                                                                                                                                    })
                                                                                                                                 });
                                                                                                                                 $("body").keydown(function () {
                                                                                                                                     if ($("form textarea.focus").length === 0) {
