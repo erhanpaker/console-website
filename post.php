@@ -21,7 +21,7 @@ if (isset($_POST)) {
     $phone = post('tel');
     $message = post('message');
     $from = 'info@erdiertas.com';
-    $subject = 'Message from Contact Demo ';
+    $subject = 'Message from Contact';
 
     $body = "From: $name \nE-Mail: $email \nPhone: $phone \nMessage:\n $message";
 
