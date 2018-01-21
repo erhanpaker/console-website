@@ -70,7 +70,9 @@
             font-size: 18px;
             padding: 13px 7px;
             z-index: -1;
+            display: none;
         }
+
 
         .info {
             color: #00bcd4;
@@ -468,6 +470,7 @@
                                                                                                                                     '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span>' +
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
                                                                                                                                     '');
+                                                                                                                                $("form").show(0);
                                                                                                                                 setTimeout(function () {
                                                                                                                                     $("form textarea").each(function () {
                                                                                                                                         textareaSetPosition($(this));
