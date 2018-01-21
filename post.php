@@ -20,14 +20,14 @@ if (isset($_POST)) {
     $email = post('email');
     $phone = post('tel');
     $message = post('message');
-    $from = 'iletisim@enverertas.com';
-    $to = 'erdiertas@gmail.com';
+    $from = 'info@erdiertas.com';
+//    $to = 'erdiertas@gmail.com';
     $subject = 'Message from Contact Demo ';
 
     $body = "From: $name\n E-Mail: $email\n Phone: $phone\n Message:\n $message";
 
     if ($name && $email && $phone && $message) {
-        if (mail($to, $subject, $body, $from)) {
+        if (mail($from, $subject, $body, $from)) {
             $result = '202';
         } else {
             $result = '500';
