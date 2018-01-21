@@ -21,7 +21,7 @@ if (isset($_POST)) {
     $phone = post('tel');
     $message = post('message');
     $from = 'Contact Form';
-    $to = 'iletisim@enverertas.com,erdiertas@gmail.com';
+    $to = 'erdiertas@gmail.com';
     $subject = 'Message from Contact Demo ';
 
     $body = "From: $name\n E-Mail: $email\n Phone: $phone\n Message:\n $message";
