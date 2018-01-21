@@ -56,11 +56,13 @@
             /*position: absolute;*/
             /*left: -1000px;*/
             /*top:-1000px;*/
-            opacity: 0;
+            /*opacity: 0;*/
         }
 
         form textarea {
             position: absolute;
+            left: 0;
+            width: 100%;
             font-family: monospace;
             white-space: pre;
             font-size: 18px;
@@ -122,6 +124,7 @@
         crossorigin="anonymous"></script>
 
 <script>
+
     var main = {
         cursorStop: false,
         cursor: function () {
@@ -462,6 +465,11 @@
                                                                                                                                     '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span>' +
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
                                                                                                                                     '');
+                                                                                                                                setTimeout(function () {
+                                                                                                                                 $("form textarea").each(function () {
+                                                                                                                                     textareaSetPosition($(this));
+                                                                                                                                 })
+                                                                                                                                });
                                                                                                                                 $("body").keydown(function () {
                                                                                                                                     if ($("form textarea.focus").length === 0) {
                                                                                                                                         $("form textarea[name='" + lastFocus + "']").get(0).focus();
@@ -481,8 +489,6 @@
                                                                                                                                         });
                                                                                                                                     }
                                                                                                                                 });
-                                                                                                                                document.getElementById("message").focus();
-
                                                                                                                             });
                                                                                                                         });
                                                                                                                     });
@@ -544,16 +550,22 @@
         var value = main.textareaBr(t.val(), cursorPosition);
 
         t.val(value.native);
-
+        textareaSetPosition(t);
         value = value.out;
-        t.css({
-            top: activeSpan.offset().top,
-            width: activeSpan.find('.value').width(),
-            height: activeSpan.find('.value').height()
-        });
+
         activeSpan.find('.value').html(value);
     });
 
+    function textareaSetPosition(t) {
+        var name = t.attr("name");
+        var activeSpan = $(".user span[data-id='" + name + "']");
+
+        t.css({
+            top: activeSpan.offset().top,
+//            width: activeSpan.find('.value').width(),
+            height: activeSpan.find('.value').height()
+        });
+    }
 
 
 </script>
