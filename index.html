@@ -3,7 +3,8 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1 initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1 initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="google-site-verification" content="77DVRkmW5s_MZLrn9q659MsC9PpstY9xpV-b4rGG5-M"/>
     <title>Senior Full-Stack Developer Erdi Ertaş</title>
 
@@ -29,9 +30,10 @@
 
         .cursor {
             position: absolute;
+            margin-top: 4px;
             width: 6px;
             background-color: #03ff00;
-            height: 10px;
+            height: 13px;
             display: inline-block;
         }
 
@@ -57,12 +59,12 @@
             /*position: absolute;*/
             /*left: -1000px;*/
             /*top:-1000px;*/
-            opacity: 0;
             display: none;
             /*visibility: hidden;*/
         }
 
         form textarea {
+            opacity: 0;
             position: absolute;
             left: 0;
             top: 0;
@@ -74,12 +76,24 @@
             z-index: -1;
         }
 
-
         .info {
             color: #00bcd4;
         }
 
+        button {
+            color: #7ff20f;
+            border: dashed 1px;
+            background-color: #000;
+            font-size: 18px;
+        }
+
+
+
         @media only screen and (max-device-width: 480px) {
+            .cursor {
+                margin-top: 2px;
+                height: 9px;
+            }
             body, form textarea {
                 font-size: 12px;
             }
@@ -469,13 +483,17 @@
                                                                                                                                     '<span data-id="name">Your Name:          <br><span class="value"><span class="info"><span class="cursor"></span>  ~~~~~~ Touch to write. ~~~~~~</span></span>\n</span><br>' +
                                                                                                                                     '<span data-id="email">Your E-mail:        <br><span class="value"></span>\n</span><br>' +
                                                                                                                                     '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span><br>' +
-                                                                                                                                    '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
+                                                                                                                                    '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span><br>' +
+                                                                                                                                    '<<br><button id="send-message" type="button">SEND</button>' +
                                                                                                                                     '');
                                                                                                                                 $("form").show(0);
                                                                                                                                 setTimeout(function () {
                                                                                                                                     $("form textarea").each(function () {
                                                                                                                                         textareaSetPosition($(this));
                                                                                                                                     })
+                                                                                                                                    $("#send-message").click(function () {
+                                                                                                                                        $("#contact-form form")[0].submit();
+                                                                                                                                    });
                                                                                                                                 });
                                                                                                                                 $("body").keydown(function () {
                                                                                                                                     if ($("form textarea.focus").length === 0) {
@@ -527,7 +545,8 @@
     var lastFocus = 'name';
     $("form textarea").focus(function () {
         main.cursorStop = false;
-        $(this).addClass('focus').keyup();
+        var value = $(this).val();
+        $(this).addClass('focus').keyup().val("").val(value);
     }).blur(function () {
         main.cursorStop = true;
         $(this).removeClass('focus');
@@ -572,6 +591,10 @@
 //            width: activeSpan.find('.value').width(),
             height: activeSpan.height()
         });
+    }
+
+    function ajaxPost() {
+
     }
 
 
