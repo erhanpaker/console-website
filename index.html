@@ -546,7 +546,7 @@
     $("form textarea").focus(function () {
         main.cursorStop = false;
         var value = $(this).val();
-        $(this).addClass('focus').keyup().val("").val(value);
+        $(this).addClass('focus').val("").val(value).keyup();
     }).blur(function () {
         main.cursorStop = true;
         $(this).removeClass('focus');
@@ -592,7 +592,13 @@
             height: activeSpan.height()
         });
     }
+    $('form textarea').on({
+        'touchstart mousedown': function () {
+            var value = $(this).val();
+            $(this).val("").val(value).keyup();
 
+        }
+    });
     function ajaxPost() {
 
     }
