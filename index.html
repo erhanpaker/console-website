@@ -48,9 +48,10 @@
         }
 
         .talents span:nth-of-type(even) {
-            color: #c7ff29;
+            color: #02a600;
         }
 
+        .message-success,
         .user-name {
             color: #ffd700;
         }
@@ -75,6 +76,12 @@
             padding: 13px 7px;
             z-index: 3;
         }
+
+        .message-error,
+        span[data-id].error {
+            color: red;
+        }
+
         form textarea.focus {
             left: -1000px;
         }
@@ -88,15 +95,18 @@
             border: dashed 1px;
             background-color: #000;
             font-size: 18px;
+            outline: none;
         }
-
-
-
+        .message-error,
+        .message-success {
+            display: none;
+        }
         @media only screen and (max-device-width: 480px) {
             .cursor {
                 margin-top: 2px;
                 height: 9px;
             }
+
             body, form textarea {
                 font-size: 12px;
             }
@@ -129,7 +139,7 @@
 
     </div>
     <div id="contact-form">
-        <form action="">
+        <form method="post" action="javascript:ajaxPost()">
             <textarea name="name" autocomplete="off"></textarea>
             <textarea name="email" autocomplete="off"></textarea>
             <textarea name="tel" autocomplete="off"></textarea>
@@ -487,7 +497,7 @@
                                                                                                                                     '<span data-id="email">Your E-mail:        <br><span class="value"></span>\n</span><br>' +
                                                                                                                                     '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span><br>' +
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span><br>' +
-                                                                                                                                    '<br><button id="send-message" type="button">SEND</button>' +
+                                                                                                                                    '<br><button id="send-message" type="button">SEND</button> <span class="message-success">Thanks for your message.</span><span class="message-error">Unspecified error!</span>' +
                                                                                                                                     '');
                                                                                                                                 $("form").show(0);
                                                                                                                                 setTimeout(function () {
@@ -550,6 +560,7 @@
         main.cursorStop = false;
         var value = $(this).val();
         $(this).addClass('focus').val("").val(value).keyup();
+        $(".user span[data-id='" + $(this).attr('name') + "']").removeClass('error');
     }).blur(function () {
         main.cursorStop = true;
         $(this).removeClass('focus');
@@ -595,6 +606,7 @@
             height: activeSpan.height()
         });
     }
+
     $('form textarea').on({
         'touchstart mousedown': function () {
             var value = $(this).val();
@@ -602,7 +614,31 @@
 
         }
     });
+
     function ajaxPost() {
+        var textarea = $("form textarea");
+        var valid = false;
+        var params = {};
+        textarea.each(function () {
+            if ($(this).val() === "") {
+                valid = true;
+                $(".user span[data-id='" + $(this).attr('name') + "']").addClass('error');
+            } else {
+                params[$(this).attr('name')] = $(this).val();
+            }
+        });
+        if (!valid) {
+            $.post("post.php", params)
+                .done(function (data) {
+                    var status = 'error';
+                    if (data == "202") {
+                        $("form textarea").val('');
+                        $(".user .value").text('');
+                        status = 'success';
+                    }
+                    $(".message-" + status).fadeIn(250).delay(2000).fadeOut(500);
+                });
+        }
 
     }
 
