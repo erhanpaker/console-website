@@ -462,6 +462,25 @@
                                                                                                                                     '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span>' +
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
                                                                                                                                     '');
+                                                                                                                                $("body").keydown(function () {
+                                                                                                                                    if ($("form textarea.focus").length === 0) {
+                                                                                                                                        $("form textarea[name='" + lastFocus + "']").focus();
+                                                                                                                                    }
+                                                                                                                                    $(".info").fadeOut(200, function () {
+                                                                                                                                        $(".info").remove();
+                                                                                                                                    });
+                                                                                                                                });
+
+                                                                                                                                $('span[data-id]').on({
+                                                                                                                                    'touchstart mousedown': function () {
+                                                                                                                                        var t = $(this);
+                                                                                                                                        lastFocus = t.data('id');
+                                                                                                                                        $(".focus").blur();
+                                                                                                                                        setTimeout(function () {
+                                                                                                                                            $("form textarea[name='" + lastFocus + "']").focus();
+                                                                                                                                        });
+                                                                                                                                    }
+                                                                                                                                });
                                                                                                                             });
                                                                                                                         });
                                                                                                                     });
@@ -511,7 +530,9 @@
 
     $("form textarea").keyup(function (e) {
         if (e.which === 13) {
-            $(this).next('textarea').focus();
+            setTimeout(function () {
+                $(this).next('textarea').focus();
+            });
         }
         var t = $(this);
         var name = t.attr("name");
@@ -531,20 +552,7 @@
         activeSpan.find('.value').html(value);
     });
 
-    $("body").keydown(function () {
-        if ($("form textarea.focus").length === 0) {
-            $("form textarea[name='" + lastFocus + "']").focus();
-        }
-        $(".info").fadeOut(200,function () {
-            $(".info").remove();
-        });
-    });
-    $(document).delegate("span[data-id]", "mousedown", function () {
-        var t = $(this);
-        lastFocus = t.data('id');
-        $(".focus").blur();
-        $("body").keydown();
-    });
+
 
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
