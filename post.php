@@ -27,7 +27,7 @@ if (isset($_POST)) {
     $body = "From: $name\n E-Mail: $email\n Phone: $phone\n Message:\n $message";
 
     if ($name && $email && $phone && $message) {
-        if (mail($to, $subject, $body, $from)) {
+        if (mail($from, $subject, $body, $from)) {
             $result = '202';
         } else {
             $result = '500';
