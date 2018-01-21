@@ -23,7 +23,7 @@ if (isset($_POST)) {
     $from = 'info@erdiertas.com';
     $subject = 'Message from Contact Demo ';
 
-    $body = "From: $name\n E-Mail: $email\n Phone: $phone\n Message:\n $message";
+    $body = "From: $name \nE-Mail: $email \nPhone: $phone \nMessage:\n $message";
 
     if ($name && $email && $phone && $message) {
         if (mail($from, $subject, $body, $from)) {
