@@ -28,6 +28,7 @@
         }
 
         .cursor {
+            position: absolute;
             width: 6px;
             background-color: #03ff00;
             height: 10px;
@@ -465,9 +466,9 @@
                                                                                                                             main.writeLine("Please fill in the contact form.", 'view', function () {
                                                                                                                                 $(".cursor").remove();
                                                                                                                                 main.changeUser('' +
-                                                                                                                                    '<span data-id="name">Your Name:          <br><span class="value"><span class="info"><span class="cursor"></span>  ~~~~~~ Touch to write. ~~~~~~</span></span>\n</span>' +
-                                                                                                                                    '<span data-id="email">Your E-mail:        <br><span class="value"></span>\n</span>' +
-                                                                                                                                    '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span>' +
+                                                                                                                                    '<span data-id="name">Your Name:          <br><span class="value"><span class="info"><span class="cursor"></span>  ~~~~~~ Touch to write. ~~~~~~</span></span>\n</span><br>' +
+                                                                                                                                    '<span data-id="email">Your E-mail:        <br><span class="value"></span>\n</span><br>' +
+                                                                                                                                    '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span><br>' +
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
                                                                                                                                     '');
                                                                                                                                 $("form").show(0);
