@@ -47,11 +47,32 @@
         .talents span:nth-of-type(even) {
             color: #c7ff29;
         }
+
         .user-name {
             color: #ffd700;
         }
+
+        form {
+            /*position: absolute;*/
+            /*left: -1000px;*/
+            /*top:-1000px;*/
+            opacity: 0;
+        }
+
+        form textarea {
+            position: absolute;
+            font-family: monospace;
+            white-space: pre;
+            font-size: 18px;
+            z-index: -1;
+        }
+
+        .info {
+            color: #00bcd4;
+        }
+
         @media only screen and (max-device-width: 480px) {
-            body {
+            body, form textarea {
                 font-size: 12px;
             }
 
@@ -64,13 +85,16 @@
             }
         }
 
+        .hide {
+            visibility: hidden;
+        }
 
     </style>
 </head>
 <body>
 
 
-<div class="container-fluid">
+<div class="container">
     <div id="board">
 <pre>
 <span class="view"></span>
@@ -79,7 +103,16 @@
 </pre>
 
     </div>
+    <div id="contact-form">
+        <form action="">
+            <textarea name="name" autocomplete="off"></textarea>
+            <textarea name="email" autocomplete="off"></textarea>
+            <textarea name="tel" autocomplete="off"></textarea>
+            <textarea name="message" autocomplete="off"></textarea>
+        </form>
+    </div>
 </div>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -90,8 +123,13 @@
 
 <script>
     var main = {
+        cursorStop: false,
         cursor: function () {
-            $(".cursor").toggle(50);
+            if (this.cursorStop) {
+                $(".cursor").fadeIn(50);
+            } else {
+                $(".cursor").toggle(50);
+            }
             setTimeout(function () {
                 main.cursor();
             }, 500)
@@ -185,7 +223,7 @@
                     if (_function) {
                         _function();
                     }
-                }, 1000);
+                }, 100);
             }
         },
         clear: function (area) {
@@ -211,13 +249,13 @@
             if (text[key] !== undefined) {
                 setTimeout(function () {
                     main.writeLine(text, area, _function, _class, key);
-                }, 100);
+                }, _class === "image" ? 20 : 100);
             } else {
                 setTimeout(function () {
                     if (_function) {
                         _function();
                     }
-                }, 1000);
+                }, 100);
             }
 //            $(window).load(function() {
             $("html, body").stop(true, true).animate({scrollTop: $(document).height()}, 1000);
@@ -235,6 +273,38 @@
                 return '#BR#';
             }
             return '';
+        },
+        textareaBr: function (text, cursor, out, native, count) {
+            if (out === undefined) {
+                text = text.replace(/\n/g, '');
+            } else {
+                count++;
+            }
+            out = out || "";
+            native = native || "";
+            count = count || 0;
+            var addText = text.substring(0, 45);
+            var newCount = count + addText.length;
+            out += (out === "" ? "" : "\n");
+
+            if (cursor !== false && cursor <= newCount) {
+                out += addText.substring(0, cursor - count) + "<span class=\"cursor\"></span>" + addText.substring(cursor - count);
+                cursor = false;
+            } else {
+                out += addText;
+            }
+            native += (native === "" ? "" : "\n") + addText;
+            count = newCount;
+            text = text.substring(45);
+            if (text === "") {
+                return {
+                    count: count,
+                    out: out,
+                    native: native
+                };
+            } else {
+                return this.textareaBr(text, cursor, out, native, count);
+            }
         },
         render: function () {
             this.cursor();
@@ -256,7 +326,7 @@
                             main.write(main.getMobileBr() + "cd erdiertas/files", "text", function () {
                                 setTimeout(function () {
                                     main.changeUser('<span class="user-name">guest@erdiertas.com:</span>erdiertas/files # ');
-                                },100);
+                                }, 100);
                                 main.writeUserCommand(function () {
                                     main.write(main.getMobileBr() + 'wget profile_photo.jpg', 'text', function () {
                                         main.writeUserCommand(function () {
@@ -376,11 +446,26 @@
                                                                                                             main.writeLine(
                                                                                                                 "\n" +
                                                                                                                 "          ~~ LAST PROJECTS ~~\n" +
-                                                                                                                "2018:       <a href='http://erdiertas.com' target='_blank'>erdiertas.com</a> (Backend)\n" +
+                                                                                                                "2018:       <a href='http://erdiertas.com' target='_blank'>erdiertas.com</a> (Backend, Frontend)\n" +
                                                                                                                 "2017:       <a href='http://maggenta.com' target='_blank'>maggenta.com</a> (Backend, Frontend)\n" +
                                                                                                                 "2016:       <a href='http://osmanlispor.com.tr' target='_blank'>osmanlispor.com.tr</a> (Backend)\n" +
                                                                                                                 "2015:       <a href='http://shop.attconcorde.com' target='_blank'>attconcorde.com</a> (Backend, Frontend)\n" +
-                                                                                                                "2014:       <a href='http://3e5.com/'>+Social CRM</a> (Backend)", "view");
+                                                                                                                "2014:       <a href='http://3e5.com/'>+Social CRM</a> (Backend)", "view", function () {
+                                                                                                                    main.write(main.getMobileBr() + "contact --me", "text", function () {
+                                                                                                                        main.writeUserCommand(function () {
+                                                                                                                            main.clear('text');
+                                                                                                                            main.writeLine("Please fill in the contact form.", 'view', function () {
+                                                                                                                                $(".cursor").remove();
+                                                                                                                                main.changeUser('' +
+                                                                                                                                    '<span data-id="name">Your Name:          <br><span class="value"><span class="info"><span class="cursor"></span>  ~~~~~~ Touch to write. ~~~~~~</span></span>\n</span>' +
+                                                                                                                                    '<span data-id="email">Your E-mail:        <br><span class="value"></span>\n</span>' +
+                                                                                                                                    '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span>' +
+                                                                                                                                    '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span>' +
+                                                                                                                                    '');
+                                                                                                                            });
+                                                                                                                        });
+                                                                                                                    });
+                                                                                                                });
                                                                                                         });
                                                                                                     });
                                                                                                 }, 'talents');
@@ -403,6 +488,63 @@
         }
     };
     main.render();
+
+
+    var lastFocus = 'name';
+    $("form textarea").focus(function () {
+        main.cursorStop = false;
+        $(this).addClass('focus').keyup();
+    }).blur(function () {
+        main.cursorStop = true;
+        $(this).removeClass('focus');
+        lastFocus = $(this).attr("name")
+    });
+
+    //    function focusTest() {
+    //        if ($("form textarea.focus").length === 0) {
+    //            $("form textarea[name='" + lastFocus + "']").focus();
+    //        }
+    //        setTimeout(function () {
+    //            focusTest();
+    //        }, 500);
+    //    }
+
+    $("form textarea").keyup(function (e) {
+        if (e.which === 13) {
+            $(this).next('textarea').focus();
+        }
+        var t = $(this);
+        var name = t.attr("name");
+        $(".cursor").addClass('hide');
+        var activeSpan = $(".user span[data-id='" + name + "']");
+        var cursorPosition = $(this).get(0).selectionStart;
+        var value = main.textareaBr(t.val(), cursorPosition);
+
+        t.val(value.native);
+
+        value = value.out;
+        t.css({
+            top: activeSpan.offset().top,
+            width: activeSpan.find('.value').width(),
+            height: activeSpan.find('.value').height()
+        });
+        activeSpan.find('.value').html(value);
+    });
+
+    $("body").keydown(function () {
+        if ($("form textarea.focus").length === 0) {
+            $("form textarea[name='" + lastFocus + "']").focus();
+        }
+        $(".info").fadeOut(200,function () {
+            $(".info").remove();
+        });
+    });
+    $(document).delegate("span[data-id]", "mousedown", function () {
+        var t = $(this);
+        lastFocus = t.data('id');
+        $(".focus").blur();
+        $("body").keydown();
+    });
 
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
