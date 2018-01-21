@@ -464,7 +464,7 @@
                                                                                                                                     '');
                                                                                                                                 $("body").keydown(function () {
                                                                                                                                     if ($("form textarea.focus").length === 0) {
-                                                                                                                                        $("form textarea[name='" + lastFocus + "']").focus().select();
+                                                                                                                                        $("form textarea[name='" + lastFocus + "']").get(0).focus();
                                                                                                                                     }
                                                                                                                                     $(".info").fadeOut(200, function () {
                                                                                                                                         $(".info").remove();
@@ -477,7 +477,7 @@
                                                                                                                                         lastFocus = t.data('id');
                                                                                                                                         $(".focus").blur();
                                                                                                                                         setTimeout(function () {
-                                                                                                                                            $("form textarea[name='" + lastFocus + "']").focus().select();
+                                                                                                                                            $("form textarea[name='" + lastFocus + "']").get(0).focus();
                                                                                                                                         });
                                                                                                                                     }
                                                                                                                                 });
