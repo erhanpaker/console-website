@@ -97,10 +97,12 @@
             font-size: 18px;
             outline: none;
         }
+        .message-loading,
         .message-error,
         .message-success {
             display: none;
         }
+
         @media only screen and (max-device-width: 480px) {
             .cursor {
                 margin-top: 2px;
@@ -160,6 +162,26 @@
 
     var main = {
         cursorStop: false,
+        _timeoutLoadingMessage: null,
+        loadingMessage: function (max) {
+            var span = $(".message-loading");
+            if (max === 'stop') {
+                clearTimeout(this._timeoutLoadingMessage);
+                span.stop(true, true).fadeOut(100);
+            }else{
+                var text = '';
+                if(max !== 4){
+                    for (var i = 0; i < max; i++) {
+                        text += '.';
+                    }
+                }
+                span.stop(true, true).fadeIn(200).html(text);
+                this._timeoutLoadingMessage = setTimeout(function () {
+                    max = (max === 4 ? 0 : ++max);
+                    main.loadingMessage(max)
+                }, 250);
+            }
+        },
         cursor: function () {
             if (this.cursorStop) {
                 $(".cursor").fadeIn(50);
@@ -497,7 +519,7 @@
                                                                                                                                     '<span data-id="email">Your E-mail:        <br><span class="value"></span>\n</span><br>' +
                                                                                                                                     '<span data-id="tel">Your Phone:         <br><span class="value"></span>\n</span><br>' +
                                                                                                                                     '<span data-id="message">Your Message:       <br><span class="value"></span>\n</span><br>' +
-                                                                                                                                    '<br><button id="send-message" type="button">SEND</button> <span class="message-success">Thanks for your message.</span><span class="message-error">Unspecified error!</span>' +
+                                                                                                                                    '<br><button id="send-message" type="button">SEND</button> <span class="message-loading">...</span><span class="message-success">Thanks for your message.</span><span class="message-error">Unspecified error!</span>' +
                                                                                                                                     '');
                                                                                                                                 $("form").show(0);
                                                                                                                                 setTimeout(function () {
@@ -628,15 +650,19 @@
             }
         });
         if (!valid) {
+            $("form").attr("action", "javascript:void(0)");
+            main.loadingMessage(0);
             $.post("post.php", params)
                 .done(function (data) {
+                    main.loadingMessage('stop');
                     var status = 'error';
                     if (data == "202") {
                         $("form textarea").val('');
                         $(".user .value").text('');
                         status = 'success';
                     }
-                    $(".message-" + status).fadeIn(250).delay(2000).fadeOut(500);
+                    $("form").attr("action", "javascript:ajaxPost()")
+                    $(".message-" + status).fadeIn(500).delay(5000).fadeOut(1000);
                 });
         }
 
